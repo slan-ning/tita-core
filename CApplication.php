@@ -6,17 +6,15 @@ class CApplication
     public $config;
     public static $app = null;
 
-    public function __construct()
+    public function __construct($config)
     {
-        $this->loadGlobalData(); //加载global目录下的所有php文件
-        $this->config = require APP_PATH . '/config.php';
-
+        $this->config=$config;
     }
 
-    public static function app()
+    public static function app($config=null)
     {
         if (self::$app == null) {
-            self::$app = new self();
+            self::$app = new self($config);
         }
         return self::$app;
     }
@@ -24,9 +22,9 @@ class CApplication
     public function run()
     {
         $group = isset($_GET['g']) ? strtolower($_GET['g']) : '';
-        if ($group == '')
+        if ($group == '') {
             $control = 'controller\\' . strtolower(isset($_GET['c']) ? $_GET['c'] : 'index');
-        else {
+        } else {
             $control = $group . '\controller\\' . strtolower(isset($_GET['c']) ? $_GET['c'] : 'index');
         }
 
@@ -38,19 +36,6 @@ class CApplication
             $ctrl->$action();
         }
 
-    }
-
-    public function loadGlobalData()
-    {
-
-        if (!defined("TITA_FRAMEWORK_HAS_LOAD_GLOBALDIR")) {
-            $dir = APP_PATH . "/global/";
-            foreach (glob($dir . "*.php") as $file) {
-                include $file;
-            }
-
-            define("TITA_FRAMEWORK_HAS_LOAD_GLOBALDIR", true);
-        }
     }
 
 }

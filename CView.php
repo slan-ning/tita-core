@@ -1,8 +1,6 @@
 <?php
 namespace core;
 
-use core\helper\db\DB;
-
 class CView {
 
 	private $parm=array();
