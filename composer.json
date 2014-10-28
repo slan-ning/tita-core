@@ -5,5 +5,11 @@
         "php": ">=5.4.0",
         "illuminate/database": "*"
     },
-    "license": "BSD-3-Clause"
+    "license": "BSD-3-Clause" ,
+    "autoload": {
+        "psr-4": {
+            "core\\": "."
+        }
+    }
+
 }
