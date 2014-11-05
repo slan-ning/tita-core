@@ -28,12 +28,15 @@ class CPage
             $this->pageCount = 1;
         }
         if($pageUrl==''){
-            $this->pageUrl = "http://" . $_SERVER ['HTTP_HOST'] . $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'];
+            $this->pageUrl = "http://" . $_SERVER ['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         }else{
             $this->pageUrl=$pageUrl;
         }
 
         $this->pageUrl = str_replace("&p=" . $this->pageNum, "", $this->pageUrl);
+        if(strpos($this->pageUrl,'?')<=0){
+            $this->pageUrl.='?';
+        }
     }
 
     function limit()
