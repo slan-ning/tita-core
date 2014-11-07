@@ -31,6 +31,7 @@ class CMysql
 
     /**
      * 构造函数。
+     *
      * @param string|array $dbcfg 直接传config.php中的数据库配置key，或者数据库配置数组
      */
     function __construct($dbcfg = "db")
@@ -174,9 +175,9 @@ class CMysql
      */
     public function commit()
     {
-        if($this->db->inTransaction()){
+        if ($this->db->inTransaction()) {
             return $this->db->commit();
-    }
+        }
 
     }
 
@@ -185,9 +186,9 @@ class CMysql
      */
     public function rollBack()
     {
-        if($this->db->inTransaction()){
+        if ($this->db->inTransaction()) {
             return $this->db->rollBack();
-    }
+        }
 
     }
 
@@ -243,7 +244,8 @@ class CMysql
     /**
      * @desc 关闭数据库长连接
      */
-    public function closedb(){
+    public function closedb()
+    {
         unset($this->db);
     }
 

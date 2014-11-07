@@ -1,5 +1,6 @@
 <?php
 namespace core\helper;
+
 use core\CApplication;
 
 /**
@@ -15,7 +16,7 @@ class Model
 
     private $attributes;
     private $table;
-    private $isNew=true;
+    private $isNew = true;
     private $prikey;
 
     private $_field;
@@ -24,97 +25,100 @@ class Model
     private $_where;
     private $_group;
 
-    public static function create($table,$dbname='')
+    public static function create($table, $dbname = '')
     {
-        if(!empty($dbname)){
-            $model=new Model($table,$dbname);
-        }else{
-            $model= new Model($table);
+        if (!empty($dbname)) {
+            $model = new Model($table, $dbname);
+        } else {
+            $model = new Model($table);
         }
 
         return $model;
     }
 
 
-    public function __construct($tablename,$dbname=''){
-        $dbconfig=CApplication::app()->config['db'];
+    public function __construct($tablename, $dbname = '')
+    {
+        $dbconfig = CApplication::app()->config['db'];
 
-        if(!empty($dbname)){
-            $dbconfig['dbname']=$dbname;
+        if (!empty($dbname)) {
+            $dbconfig['dbname'] = $dbname;
         }
 
-        $this->db=new CMysql($dbconfig);
-        $this->table=$tablename;
+        $this->db    = new CMysql($dbconfig);
+        $this->table = $tablename;
         //获得所有的字段
-        $sql="desc `".$this->table."`";
-        $field=$this->db->sqlquery($sql);
+        $sql   = "desc `" . $this->table . "`";
+        $field = $this->db->sqlquery($sql);
 
-        foreach($field as $val){
-            $this->attributes[$val['Field']]=null;
-            if($val['Key']=='PRI'){
-                $this->prikey=$val['Field'];
+        foreach ($field as $val) {
+            $this->attributes[$val['Field']] = null;
+            if ($val['Key'] == 'PRI') {
+                $this->prikey = $val['Field'];
             }
         }
 
     }
 
-    public function select($pk=0){
-        if($pk==0){
-            $fields=empty($this->_field)?'*':$this->_field;
-            $wheres=empty($this->_where)?'':('where '.$this->_where);
-            $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-            $orders=empty($this->_order)?'':('order by '.$this->_order);
-            $groups=empty($this->_group)?'':('group by '.$this->_group);
+    public function select($pk = 0)
+    {
+        if ($pk == 0) {
+            $fields = empty($this->_field) ? '*' : $this->_field;
+            $wheres = empty($this->_where) ? '' : ('where ' . $this->_where);
+            $limits = empty($this->_limit) ? '' : ('limit ' . $this->_limit);
+            $orders = empty($this->_order) ? '' : ('order by ' . $this->_order);
+            $groups = empty($this->_group) ? '' : ('group by ' . $this->_group);
 
-            $sql="select $fields from `".$this->table."` $wheres $orders $groups $limits";
-            $this->_field='';
-            $this->_limit='';
-            $this->_where='';
-            $this->_order='';
-            $this->_group='';
-            
-            $data=$this->db->sqlquery($sql);
+            $sql          = "select $fields from `" . $this->table . "` $wheres $orders $groups $limits";
+            $this->_field = '';
+            $this->_limit = '';
+            $this->_where = '';
+            $this->_order = '';
+            $this->_group = '';
+
+            $data = $this->db->sqlquery($sql);
             return $data;
-        }elseif(is_int($pk) || ctype_digit($pk)){
-            $fields=empty($this->_field)?'*':$this->_field;
-            $wheres="where ".$this->prikey."=$pk";
-            $sql="select $fields from `".$this->table."` $wheres ";
+        } elseif (is_int($pk) || ctype_digit($pk)) {
+            $fields = empty($this->_field) ? '*' : $this->_field;
+            $wheres = "where " . $this->prikey . "=$pk";
+            $sql    = "select $fields from `" . $this->table . "` $wheres ";
             return $this->db->sqlqueryone($sql);
         }
     }
 
     public function sum($key)
     {
-        $wheres=empty($this->_where)?'':('where '.$this->_where);
-        $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-        $orders=empty($this->_order)?'':('order by '.$this->_order);
-        $groups=empty($this->_group)?'':('group by '.$this->_group);
+        $wheres = empty($this->_where) ? '' : ('where ' . $this->_where);
+        $limits = empty($this->_limit) ? '' : ('limit ' . $this->_limit);
+        $orders = empty($this->_order) ? '' : ('order by ' . $this->_order);
+        $groups = empty($this->_group) ? '' : ('group by ' . $this->_group);
 
-        $sql="select sum($key) from `".$this->table."` $wheres $orders $groups $limits";
+        $sql = "select sum($key) from `" . $this->table . "` $wheres $orders $groups $limits";
 
-        $this->_limit='';
-        $this->_where='';
-        $this->_order='';
-        $this->_group='';
+        $this->_limit = '';
+        $this->_where = '';
+        $this->_order = '';
+        $this->_group = '';
 
-        $data=$this->db->sqlqueryscalar($sql);
+        $data = $this->db->sqlqueryscalar($sql);
         return $data;
     }
 
-    public function count(){
-        $wheres=empty($this->_where)?'':('where '.$this->_where);
-        $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-        $orders=empty($this->_order)?'':('order by '.$this->_order);
-        $groups=empty($this->_group)?'':('group by '.$this->_group);
+    public function count()
+    {
+        $wheres = empty($this->_where) ? '' : ('where ' . $this->_where);
+        $limits = empty($this->_limit) ? '' : ('limit ' . $this->_limit);
+        $orders = empty($this->_order) ? '' : ('order by ' . $this->_order);
+        $groups = empty($this->_group) ? '' : ('group by ' . $this->_group);
 
-        $sql="select count(1) from `".$this->table."` $wheres $orders $groups $limits";
+        $sql = "select count(1) from `" . $this->table . "` $wheres $orders $groups $limits";
 
-        $this->_limit='';
-        $this->_where='';
-        $this->_order='';
-        $this->_group='';
+        $this->_limit = '';
+        $this->_where = '';
+        $this->_order = '';
+        $this->_group = '';
 
-        $data=$this->db->sqlqueryscalar($sql);
+        $data = $this->db->sqlqueryscalar($sql);
         return $data;
     }
 
@@ -122,21 +126,22 @@ class Model
      * 数据记录删除函数，调用需加where以及limit连贯操作  ，如删除全表，请设置参数sign为true
      * 如未加连贯操作，并且sign为false，则不删除全表，直接返回false。
      */
-    public function delete($pk=0,$sign=false){
-        if($pk==0){
-            $wheres=empty($this->_where)?'':('where '.$this->_where);
-            $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-            if($wheres==""&& $limits="" &&$sign==false){
+    public function delete($pk = 0, $sign = false)
+    {
+        if ($pk == 0) {
+            $wheres = empty($this->_where) ? '' : ('where ' . $this->_where);
+            $limits = empty($this->_limit) ? '' : ('limit ' . $this->_limit);
+            if ($wheres == "" && $limits = "" && $sign == false) {
                 return false;
             }
-            $sql="delete from `".$this->table."` $wheres $limits";
-            $this->_where='';
-            $this->_limit='';
+            $sql          = "delete from `" . $this->table . "` $wheres $limits";
+            $this->_where = '';
+            $this->_limit = '';
 
             return $this->db->sqlexec($sql);
-        }elseif(is_int($pk) || ctype_digit($pk)){
-            $wheres="where ".$this->prikey."=$pk";
-            $sql="delete from `".$this->table."` $wheres limit 1";
+        } elseif (is_int($pk) || ctype_digit($pk)) {
+            $wheres = "where " . $this->prikey . "=$pk";
+            $sql    = "delete from `" . $this->table . "` $wheres limit 1";
             return $this->db->sqlexec($sql);
         }
 
@@ -147,103 +152,110 @@ class Model
     * 数据记录修改函数，调用需加where以及limit连贯操作  ，如删除全表，请设置参数sign为true
     * 如未加连贯操作，并且sign为false，则不删除全表，直接返回false。
     */
-    public function set($sets,$pk=0,$sign=false){
-        if($pk==0){
-            $wheres=empty($this->_where)?'':('where '.$this->_where);
-            $limits=empty($this->_limit)?'':('limit '.$this->_limit);
-            if($wheres==""&& $limits="" &&$sign==false){
+    public function set($sets, $pk = 0, $sign = false)
+    {
+        if ($pk == 0) {
+            $wheres = empty($this->_where) ? '' : ('where ' . $this->_where);
+            $limits = empty($this->_limit) ? '' : ('limit ' . $this->_limit);
+            if ($wheres == "" && $limits = "" && $sign == false) {
                 return false;
             }
-            $sql="update `".$this->table."` set $sets $wheres $limits";
+            $sql = "update `" . $this->table . "` set $sets $wheres $limits";
 
-            $this->_where='';
-            $this->_limit='';
-            
+            $this->_where = '';
+            $this->_limit = '';
+
             return $this->db->sqlexec($sql);
-        }elseif(is_int($pk) || ctype_digit($pk)){
-            $wheres="where ".$this->prikey."=$pk";
-            $sql="update `".$this->table."` set $sets $wheres limit 1";
+        } elseif (is_int($pk) || ctype_digit($pk)) {
+            $wheres = "where " . $this->prikey . "=$pk";
+            $sql    = "update `" . $this->table . "` set $sets $wheres limit 1";
             return $this->db->sqlqueryone($sql);
         }
     }
 
-    public function save(){
-        $keys="`".implode('`,`',array_keys($this->attributes))."`";
+    public function save()
+    {
+        $keys = "`" . implode('`,`', array_keys($this->attributes)) . "`";
 
-        $vals=array_values($this->attributes);
-        foreach($vals as &$v){
-        	if(!(is_int($v)) && !(ctype_digit($v))){
-        		//$v='\''.$v.'\'';
+        $vals = array_values($this->attributes);
+        foreach ($vals as &$v) {
+            if (!(is_int($v)) && !(ctype_digit($v))) {
+                //$v='\''.$v.'\'';
                 $v = '\'' . str_replace("'", "\'", $v) . '\'';
-        	}
+            }
         }
-        $values=implode(',',$vals);
+        $values = implode(',', $vals);
 
-        if($this->isNew){
-            $sql="Insert into `".$this->table."` ($keys) values($values)";
-            $ret= $this->db->sqlexec($sql);
-            if($ret){
-                $this->prikey=$this->db->lastInsertId();
+        if ($this->isNew) {
+            $sql = "Insert into `" . $this->table . "` ($keys) values($values)";
+            $ret = $this->db->sqlexec($sql);
+            if ($ret) {
+                $this->prikey = $this->db->lastInsertId();
             }
             return $ret;
-        }else{
-            $upvalue="";
-            $num=count($this->attributes);
-            $i=0;
-            foreach($this->attributes as $key=>$v){
+        } else {
+            $upvalue = "";
+            $num     = count($this->attributes);
+            $i       = 0;
+            foreach ($this->attributes as $key => $v) {
                 $i++;
-                if($this->prikey==$key) continue;
-                if(!(is_int($v)) && !(ctype_digit($v))){
+                if ($this->prikey == $key) {
+                    continue;
+                }
+                if (!(is_int($v)) && !(ctype_digit($v))) {
                     //$v='\''.$v.'\'';
                     $v = '\'' . str_replace("'", "\'", $v) . '\'';
                 }
-                $upvalue.="`$key`=$v";
-                if($i!=$num) $upvalue.=', ';
+                $upvalue .= "`$key`=$v";
+                if ($i != $num) {
+                    $upvalue .= ', ';
+                }
             }
-            $prikey_val=(is_int($this->attributes[$this->prikey])) || (ctype_digit($this->attributes[$this->prikey])) ? $this->attributes[$this->prikey] : "'".$this->attributes[$this->prikey]."'";
-           	$sql="update `".$this->table."` set $upvalue where ".$this->prikey."=".$prikey_val;
-			return $this->db->sqlexec($sql);
+            $prikey_val = (is_int($this->attributes[$this->prikey])) || (ctype_digit($this->attributes[$this->prikey]))
+                ? $this->attributes[$this->prikey] : "'" . $this->attributes[$this->prikey] . "'";
+            $sql        = "update `" . $this->table . "` set $upvalue where " . $this->prikey . "=" . $prikey_val;
+            return $this->db->sqlexec($sql);
         }
     }
 
     /**
      * 根据条件获得一个实例
+     *
      * @param $param
      *
      * @return $this|bool
      */
-    public function find($param){
-        $keys="`".implode("`,`",array_keys($this->attributes))."`";
-        if(is_int($param) || ctype_digit($param))
-        {
-            $sql="select $keys from `".$this->table."` where ".$this->prikey."=$param";
-        }else{
-            $sql="select $keys from `".$this->table."` where $param limit 1";
+    public function find($param)
+    {
+        $keys = "`" . implode("`,`", array_keys($this->attributes)) . "`";
+        if (is_int($param) || ctype_digit($param)) {
+            $sql = "select $keys from `" . $this->table . "` where " . $this->prikey . "=$param";
+        } else {
+            $sql = "select $keys from `" . $this->table . "` where $param limit 1";
         }
 
-        $data=$this->db->sqlqueryone($sql);
-        if($data)
-        {
-            $this->isNew=false;
-            foreach($data as $key=>$v)
-            {
-                $this->attributes[$key]=$v;
+        $data = $this->db->sqlqueryone($sql);
+        if ($data) {
+            $this->isNew = false;
+            foreach ($data as $key => $v) {
+                $this->attributes[$key] = $v;
             }
             return $this;
-        }else{
+        } else {
             return false;
         }
 
     }
 
 
-
-    public function __get($name){
+    public function __get($name)
+    {
         return $this->attributes[$name];
     }
 
-    public function __set($name,$value){
-        $this->attributes[$name]=$value;
+    public function __set($name, $value)
+    {
+        $this->attributes[$name] = $value;
     }
 
     public function __isset($name)
@@ -257,16 +269,16 @@ class Model
      *
      * @return $this
      */
-    public function __call($method,$args) {
-        if(in_array(strtolower($method),array('where','order','limit','group','field'),true)) {
-            $method='_'.$method;
-            $this->$method =   $args[0];
+    public function __call($method, $args)
+    {
+        if (in_array(strtolower($method), array('where', 'order', 'limit', 'group', 'field'), true)) {
+            $method        = '_' . $method;
+            $this->$method = $args[0];
             return $this;
-        }else{
+        } else {
             return;
         }
     }
-
 
 
 }

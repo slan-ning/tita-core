@@ -9,17 +9,18 @@
 
 namespace core\helper;
 
-abstract class CActiveForm {
+abstract class CActiveForm
+{
 
     private $property;
 
     function __construct()
     {
-        $argv=func_get_args();
+        $argv = func_get_args();
 
         foreach ($argv as $v) {
 
-            $this->property[$v]=null;
+            $this->property[$v] = null;
 
         }
     }
@@ -28,41 +29,41 @@ abstract class CActiveForm {
     public abstract function save();
 
 
-    public function input($type,$field,$option=array())
+    public function input($type, $field, $option = array())
     {
-        $html='<input type="'.$type.'" ';
+        $html = '<input type="' . $type . '" ';
 
-        foreach($option as $k=>$v){
-            $html.=$k.'="'.$v.'" ';
+        foreach ($option as $k => $v) {
+            $html .= $k . '="' . $v . '" ';
         }
 
-        if(!isset($option['name'])){
-            $html.='name="'.$field.'" ';
+        if (!isset($option['name'])) {
+            $html .= 'name="' . $field . '" ';
         }
 
-        if(!isset($option['value'])){
-            $html.='value="'.$this->$field.'" ';
+        if (!isset($option['value'])) {
+            $html .= 'value="' . $this->$field . '" ';
         }
 
-        $html.=">";
+        $html .= ">";
 
         return $html;
 
     }
 
-    public function textarea($field,$option=array())
+    public function textarea($field, $option = array())
     {
-        $html='<textarea ';
+        $html = '<textarea ';
 
-        foreach($option as $k=>$v){
-            $html.=$k.'="'.$v.'" ';
+        foreach ($option as $k => $v) {
+            $html .= $k . '="' . $v . '" ';
         }
 
-        if(!isset($option['name'])){
-            $html.='name="'.$field.'" ';
+        if (!isset($option['name'])) {
+            $html .= 'name="' . $field . '" ';
         }
 
-        $html.=">".$this->$field."</textarea>";
+        $html .= ">" . $this->$field . "</textarea>";
 
         return $html;
 
@@ -71,18 +72,18 @@ abstract class CActiveForm {
 
     public function __get($name)
     {
-        if(isset($this->property[$name])){
+        if (isset($this->property[$name])) {
 
             return $this->property[$name];
 
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function __set($name,$value)
+    public function __set($name, $value)
     {
-        $this->property[$name]=$value;
+        $this->property[$name] = $value;
     }
 
 

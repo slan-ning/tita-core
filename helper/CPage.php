@@ -16,9 +16,9 @@ class CPage
     public $pageCount; //页面数
     public $pageUrl;
 
-    function __construct($dataLen, $pagesize = 20,$pageUrl='')
+    function __construct($dataLen, $pagesize = 20, $pageUrl = '')
     {
-        $this->pageNum   =intval($_GET['p'])>0 ? intval($_GET['p']) : 1;
+        $this->pageNum   = intval($_GET['p']) > 0 ? intval($_GET['p']) : 1;
         $this->dataCount = intval($dataLen);
         $this->pageSize  = intval($pagesize);
 
@@ -27,16 +27,16 @@ class CPage
         if ($this->pageCount == 0) {
             $this->pageCount = 1;
         }
-        if($pageUrl==''){
+        if ($pageUrl == '') {
             $this->pageUrl = "http://" . $_SERVER ['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        }else{
-            $this->pageUrl=$pageUrl;
+        } else {
+            $this->pageUrl = $pageUrl;
         }
 
         $this->pageUrl = str_replace("&p=" . $this->pageNum, "", $this->pageUrl);
-        if(strpos($this->pageUrl,'?')<=0){
-            $this->pageUrl.='?';
-    }
+        if (strpos($this->pageUrl, '?') <= 0) {
+            $this->pageUrl .= '?';
+        }
     }
 
     function limit()
@@ -86,7 +86,7 @@ class CPage
 
         for ($i = $start; $i <= $end; $i++) {
             $page[] = array('url'     => $this->pageUrl . '&p=' . $i,
-                            'number' => $i,
+                            'number'  => $i,
                             'current' => $i == $this->pageNum ? true : false
             );
         }
