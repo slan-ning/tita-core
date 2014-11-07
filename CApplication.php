@@ -14,6 +14,9 @@ class CApplication
     public static function app($config=null)
     {
         if (self::$app == null) {
+            if($config===null && defined('APP_PATH')){//约定APP_PATH为应用根目录，存放着config.php
+                $config = require APP_PATH . '/config.php';
+            }
             self::$app = new self($config);
         }
         return self::$app;
