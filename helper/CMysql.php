@@ -31,10 +31,7 @@ class CMysql
 
     /**
      * 构造函数。
-     *
      * @param string|array $dbcfg 直接传config.php中的数据库配置key，或者数据库配置数组
-     *
-     * @throws \Exception
      */
     function __construct($dbcfg = "db")
     {
@@ -53,7 +50,7 @@ class CMysql
         try {
             $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw);
         } catch (\PDOException $e) {
-            throw new \Exception( '数据库连接失败:'. $e->getMessage());
+            echo '数据库连接失败:', $e->getMessage();
         }
         $this->db->query("set names utf8");
 
@@ -179,7 +176,7 @@ class CMysql
     {
         if($this->db->inTransaction()){
             return $this->db->commit();
-        }
+    }
 
     }
 
@@ -190,7 +187,7 @@ class CMysql
     {
         if($this->db->inTransaction()){
             return $this->db->rollBack();
-        }
+    }
 
     }
 

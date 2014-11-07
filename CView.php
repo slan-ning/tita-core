@@ -21,7 +21,8 @@ class CView {
 		}
 	}
 
-    public function widget($func, $control='', $paramAry = array(), $group=''){
+    public function widget($func, $control = '', $paramAry = array(), $group = '')
+    {
         $widgetControl=$this->control;
 
         if($control!=''){
@@ -50,6 +51,7 @@ class CView {
     }
 	
 	public function display($group_,$tpl_,$classname_,$lay_){
+        $group_ = str_replace('\\', '/', $group_);
         $tplPath_=$group_==''?APP_PATH."/view/":APP_PATH.'/'.$group_."/view/";
 
 		ob_start();
@@ -70,7 +72,6 @@ class CView {
 		}
 		
 	}
-
 
     public function __get($var){
         return $this->control->$var;

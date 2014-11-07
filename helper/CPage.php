@@ -36,7 +36,7 @@ class CPage
         $this->pageUrl = str_replace("&p=" . $this->pageNum, "", $this->pageUrl);
         if(strpos($this->pageUrl,'?')<=0){
             $this->pageUrl.='?';
-        }
+    }
     }
 
     function limit()

@@ -43,7 +43,7 @@ class Tita
             return substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "?"));
         } else {
             return $_SERVER['REQUEST_URI'];
-        }
+    }
     }
 
     public static function register_script($src)
