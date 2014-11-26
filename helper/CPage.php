@@ -121,7 +121,7 @@ class CPage
             $html .= "<li><a href='" . $this->nextUrl() . "'>下一页</a></li>";
         }
 
-        $html .= "<li><a href='" . $this->firstUrl() . "'>最后一页</a></li>";
+        $html .= "<li><a href='" . $this->endUrl() . "'>最后一页</a></li>";
 
         $html .= "</ul>";
 
