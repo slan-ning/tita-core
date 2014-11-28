@@ -8,8 +8,6 @@
 
 namespace core\helper\db;
 
-include_once dirname(__FILE__) . '/vendor/autoload.php';
-
 class Model extends \Illuminate\Database\Eloquent\Model
 {
     public function getConnection()
