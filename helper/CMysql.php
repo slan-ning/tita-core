@@ -29,6 +29,8 @@ class CMysql
     private $dbpasw;
     private $port;
 
+    public $connected;
+
     /**
      * 构造函数。
      *
@@ -50,8 +52,10 @@ class CMysql
 
         try {
             $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw);
+            $this->connected=true;
         } catch (\PDOException $e) {
-            echo '数据库连接失败:', $e->getMessage();
+            echo '数据库连接失败:', $e->getMessage(),'dsn:',$dsn;
+            $this->connected=false;
         }
         $this->db->query("set names utf8");
 
