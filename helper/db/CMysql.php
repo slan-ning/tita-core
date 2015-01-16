@@ -1,5 +1,5 @@
 <?php
-namespace core\helper;
+namespace core\helper\db;
 
 use core\CApplication;
 use PDO;
@@ -54,7 +54,7 @@ class CMysql
             $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw);
             $this->connected=true;
         } catch (\PDOException $e) {
-            echo '数据库连接失败:', $e->getMessage(),'dsn:',$dsn;
+            error_log('database connect error:'. $e->getMessage().'dsn:'.$dsn,0);
             $this->connected=false;
         }
         $this->db->query("set names utf8");
