@@ -77,6 +77,30 @@ class CView
 
     }
 
+    public function displayFile($group_, $filePath, $lay_)
+    {
+        $group_   = str_replace('\\', '/', $group_);
+        $tplPath_ = $group_ == '' ? APP_PATH . "/view/" : APP_PATH . '/' . $group_ . "/view/";
+
+        ob_start();
+        extract($this->parm, EXTR_OVERWRITE);
+
+        ///加载指定的文件
+        if (is_file($filePath)) {
+            include $filePath;
+        }
+
+        $buffer = ob_get_contents();
+        ob_end_clean();
+
+        //加载布局文件
+        if ($lay_ != "" && is_file($tplPath_ . "layout/$lay_.php")) {
+            include $tplPath_ . "layout/$lay_.php";
+        } else {
+            echo $buffer;
+        }
+    }
+
     public function __get($var)
     {
         return $this->control->$var;

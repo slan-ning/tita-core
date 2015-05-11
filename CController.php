@@ -44,6 +44,15 @@ class CController
         $this->view_->display($this->group_, $tplname, $classname, $this->layout);
     }
 
+    /**
+     * 加载任意绝对位置的模版文件
+     * @param $filePath
+     */
+    protected function displayFile($filePath)
+    {
+        $this->view_->displayFile($this->group_, $filePath, $this->layout);
+    }
+
     protected function widgetDisplay($tpl = '')
     {
         $tplname = ($tpl == '') ? $this->widgetPointer : $tpl;
