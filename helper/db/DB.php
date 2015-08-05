@@ -26,8 +26,8 @@ class DB extends \Illuminate\Database\Capsule\Manager
                    'database'  => Tita::app()->config['db']['dbname'],
                    'username'  => Tita::app()->config['db']['username'],
                    'password'  => Tita::app()->config['db']['password'],
-                   'charset'   => 'utf8',
-                   'collation' => 'utf8_unicode_ci',
+                   'charset'   => Tita::app()->config['db']['charset'] ?: 'utf8',
+                   'collation' => Tita::app()->config['db']['collation'] ?: 'utf8_general_ci',
                    'prefix'    => ''
         ];
 
