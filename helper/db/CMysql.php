@@ -57,7 +57,7 @@ class CMysql
             error_log('database connect error:'. $e->getMessage().'dsn:'.$dsn,0);
             $this->connected=false;
         }
-        $charset = isset($dbcfg['$dbcfg']) ?: 'utf8';
+        $charset = isset($dbcfg['charset']) ?: 'utf8';
         $this->db->query("set names " . $charset);
 
     }
