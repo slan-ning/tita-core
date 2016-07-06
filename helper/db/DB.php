@@ -9,6 +9,7 @@
 namespace core\helper\db;
 
 use core\Tita;
+use PDO;
 
 /**
  * Class DB
@@ -28,7 +29,10 @@ class DB extends \Illuminate\Database\Capsule\Manager
                    'password'  => Tita::app()->config['db']['password'],
                    'charset'   => Tita::app()->config['db']['charset'] ?: 'utf8',
                    'collation' => Tita::app()->config['db']['collation'] ?: 'utf8_general_ci',
-                   'prefix'    => ''
+                   'prefix'    => '',
+                   'options'   => array(
+                       PDO::ATTR_PERSISTENT => Tita::app()->config['db']['persistent'] ?: false,
+                   ),
         ];
 
         $key = is_string($connection) ? $connection : substr(md5(serialize($connection)), 0, 8);
@@ -62,7 +66,10 @@ if (!defined('LOAD_Illuminate_Capsule')) {
                'password'  => Tita::app()->config['db']['password'],
                'charset'   => Tita::app()->config['db']['charset'] ?: 'utf8',
                'collation' => Tita::app()->config['db']['collation'] ?: 'utf8_general_ci',
-               'prefix'    => ''
+               'prefix'    => '',
+               'options'   => array(
+                   PDO::ATTR_PERSISTENT => Tita::app()->config['db']['persistent'] ?: false,
+               ),
     ];
 
     $db  = new DB();

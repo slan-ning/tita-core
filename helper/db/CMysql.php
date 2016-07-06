@@ -28,6 +28,7 @@ class CMysql
     private $dbuser;
     private $dbpasw;
     private $port;
+    private $persistent;
 
     public $connected;
 
@@ -47,19 +48,28 @@ class CMysql
         $this->dbpasw = $dbcfg['password'];
         $this->dbname = $dbcfg['dbname'];
         $this->port   = $dbcfg['port'];
+        $this->persistent = isset($dbcfg['persistent']) ?: false;
+        $charset = !empty($dbcfg['charset']) ? $dbcfg['charset'] : 'utf8';
+        $collation = !empty($dbcfg['collation']) ? $dbcfg['collation'] : 'utf8_general_ci';
 
-        $dsn = "mysql:host=$this->dbhost;port=$this->port;dbname=$this->dbname;charset=utf8";
+        $dsn = "mysql:host=$this->dbhost;port=$this->port;dbname=$this->dbname";
+
+        $options = [
+            PDO::ATTR_CASE               => PDO::CASE_NATURAL,
+            PDO::ATTR_ORACLE_NULLS       => PDO::NULL_NATURAL,
+            PDO::ATTR_STRINGIFY_FETCHES  => false,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_PERSISTENT         => $this->persistent,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES '$charset' collate '$collation'"
+        ];
 
         try {
-            $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw);
+            $this->db = new \PDO($dsn, $this->dbuser, $this->dbpasw, $options);
             $this->connected=true;
         } catch (\PDOException $e) {
             error_log('database connect error:'. $e->getMessage().'dsn:'.$dsn,0);
             $this->connected=false;
         }
-        $charset = isset($dbcfg['charset']) ?: 'utf8';
-        $this->db->query("set names " . $charset);
-
     }
 
     /**

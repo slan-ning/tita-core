@@ -129,5 +129,18 @@ class CPage
 
     }
 
+    function pageInfo()
+    {
+        return [
+            'pageIndex'   => $this->pageNum,
+            'pageCount'   => $this->pageCount,
+            'dataCount'   => $this->dataCount,
+            'pageUrl'     => $this->pageUrl,
+            'pagePrevUrl' => $this->prevUrl() ? $this->prevUrl() : '',
+            'pageNextUrl' => $this->nextUrl() ? $this->nextUrl() : '',
+
+        ];
+    }
+
 
 }

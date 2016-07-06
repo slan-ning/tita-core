@@ -37,6 +37,14 @@ class CController
         $this->view_->assign($name, $value);
     }
 
+    protected function compact($array, $display = TRUE, $tpl = "")
+    {
+        foreach ($array as $key => $single) {
+            $this->assign($key, $single);
+        }
+        if ($display) $this->display($tpl);
+    }
+
     protected function display($tpl = "")
     {
         $tplname   = ($tpl == "") ? $this->action_ : $tpl;
