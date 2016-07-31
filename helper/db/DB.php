@@ -74,6 +74,7 @@ if (!defined('LOAD_Illuminate_Capsule')) {
 
     $db  = new DB();
     $db->addConnection($config);
+    $db->setFetchMode(PDO::FETCH_ASSOC);
     $db->setAsGlobal();
 }
 

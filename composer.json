@@ -3,7 +3,7 @@
     "description": "Tita PHP Framework - a tiny but useful framework",
     "require": {
         "php": ">=5.4.0",
-      "illuminate/database": "*",
+      "illuminate/database": "5.2.*",
       "illuminate/events": "*"
     },
     "license": "BSD-3-Clause" ,
