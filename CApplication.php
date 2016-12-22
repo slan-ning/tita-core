@@ -33,12 +33,17 @@ class CApplication
 
         $action = strtolower(isset($_GET['a']) ? $_GET['a'] : 'index');
 
+        if(!class_exists($control)){
+            http_response_code(404);
+            return false;
+        }
+
         $ctrl = new $control($group, $control, $action);
 
         if ($ctrl->beforeAction()) {
             $ctrl->$action();
         }
-
+        return true;
     }
 
 }
